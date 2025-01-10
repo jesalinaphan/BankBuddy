@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Send } from 'lucide-react';
 
 const Header = () => (
   <div className="header">
@@ -23,19 +23,57 @@ const Message = ({ text, isOutgoing }) => (
   </div>
 );
 
+const MessageInput = ({ onSend }) => {
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (message.trim()) {
+      onSend(message);
+      setMessage('');
+    }
+  };
+
+  return (
+    <form className="message-input-container" onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        placeholder="Type a message..."
+        className="message-input"
+      />
+      <button type="submit" className="send-button" disabled={!message.trim()}>
+        <Send size={20} color={message.trim() ? '#0066B3' : '#999'} />
+      </button>
+    </form>
+  );
+};
+
 const Chat = () => {
-  const [messages] = useState([
-    {
-      id: 1,
-      text: "Eno, tell me a joke",
-      isOutgoing: true
-    },
+  const [messages, setMessages] = useState([
     {
       id: 2,
-      text: 'Q: When does it rain money?\n\nA: When there\'s a "change" in the weather.',
+      text: 'Hi there! How can I help you today?',
       isOutgoing: false
     }
   ]);
+
+  const handleSendMessage = (text) => {
+    const newUserMessage = {
+      id: messages.length + 1,
+      text,
+      isOutgoing: true
+    };
+    
+    const botResponse = {
+      id: messages.length + 2,
+      text: "Thanks for your message! This is a dummy response.",
+      isOutgoing: false
+    };
+
+    setMessages([...messages, newUserMessage, botResponse]);
+  };
 
   return (
     <div className="chat-container">
@@ -49,6 +87,7 @@ const Chat = () => {
           />
         ))}
       </div>
+      <MessageInput onSend={handleSendMessage} />
     </div>
   );
 };
