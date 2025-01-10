@@ -1,11 +1,12 @@
-/* src/styles/Chat.css */
 .chat-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
     background-color: white;
-    max-width: 600px;
-    margin: 0 auto;
+    width: 100%;
+    margin: 0;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
   }
   
   .header {
